@@ -3,6 +3,7 @@ NAME	:=	main
 SRCS	:= \
 	$(NAME).cpp\
 	Bureaucrat.cpp\
+	Form.cpp\
 
 OBJS	:= $(SRCS:.cpp=.o)
 DEPS	:= $(OBJS:.o=.d)

@@ -1,13 +1,15 @@
 #include "./Bureaucrat.hpp"
 
+#include "./Form.hpp"
+
 const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
-	return "Bureaucrat::GradeTooHighException";
+	return "Grade is too high (Bureaucrat::GradeTooHighException)";
 }
 
 const char *Bureaucrat::GradeTooLowException::what() const throw()
 {
-	return "Bureaucrat::GradeTooLowException";
+	return "Grade is too low (Bureaucrat::GradeTooLowException)";
 }
 
 Bureaucrat::Bureaucrat(
@@ -82,6 +84,28 @@ void Bureaucrat::decrementGrade(
 	if (BUREAUCRAT_MIN_GRADE < nextState)
 		throw GradeTooLowException();
 	this->_grade = nextState;
+}
+
+void Bureaucrat::signForm(
+	Form &form
+)
+{
+	try {
+		form.beSigned(*this);
+		std::cout
+			<< this->getName()
+			<< " signs "
+			<< form.getName()
+			<< std::endl;
+	} catch (const std::exception &e) {
+		std::cout
+			<< this->getName()
+			<< " cannot sign "
+			<< form.getName()
+			<< " because "
+			<< e.what()
+			<< std::endl;
+	}
 }
 
 std::ostream &operator<<(

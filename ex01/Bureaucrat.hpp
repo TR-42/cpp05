@@ -1,10 +1,13 @@
 #pragma once
 
+#include <exception>
 #include <iostream>
 #include <string>
 
 #define BUREAUCRAT_MAX_GRADE 1
 #define BUREAUCRAT_MIN_GRADE 150
+
+class Form;
 
 class Bureaucrat
 {
@@ -32,6 +35,10 @@ class Bureaucrat
 
 	void incrementGrade();
 	void decrementGrade();
+
+	void signForm(
+		class Form &form
+	);
 
 	class GradeTooHighException : public std::exception
 	{
