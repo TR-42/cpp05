@@ -8,7 +8,7 @@ void RobotomyRequestForm::executeAction(
 {
 	std::cout
 		<< "GGGGG ... ";
-	std::srand(std::time(nullptr));
+	std::srand(std::time(NULL));
 	if ((std::rand() % 2) == 0) {
 		std::cout
 			<< this->_target

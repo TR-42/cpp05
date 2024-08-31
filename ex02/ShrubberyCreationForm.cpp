@@ -1,11 +1,13 @@
 #include "./ShrubberyCreationForm.hpp"
 
 #include <fstream>
+#include <iostream>
 
 void ShrubberyCreationForm::executeAction(
 ) const
 {
-	std::ofstream file(this->_target + "_shrubbery", std::ios::out | std::ios::trunc);
+	std::string targetFileName = this->_target + "_shrubbery";
+	std::ofstream file(targetFileName.c_str(), std::ios::out | std::ios::trunc);
 	if (!file.is_open()) {
 		throw std::runtime_error("Failed to open file");
 	}
