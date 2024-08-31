@@ -2,8 +2,11 @@ NAME	:=	main
 
 SRCS	:= \
 	$(NAME).cpp\
+	AForm.cpp\
 	Bureaucrat.cpp\
-	Form.cpp\
+	PresidentialPardonForm.cpp\
+	RobotomyRequestForm.cpp\
+	ShrubberyCreationForm.cpp\
 
 OBJS	:= $(SRCS:.cpp=.o)
 DEPS	:= $(OBJS:.o=.d)

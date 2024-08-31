@@ -9,7 +9,7 @@
 #define DEFAULT_MIN_GRADE_TO_SIGN 10
 #define DEFAULT_MIN_GRADE_TO_EXECUTE 10
 
-class Form
+class AForm
 {
  private:
 	std::string _name;
@@ -17,23 +17,26 @@ class Form
 	int _minGradeToSign;
 	int _minGradeToExecute;
 
+ protected:
+	virtual void executeAction() const = 0;
+
  public:
-	Form();
-	Form(
+	AForm();
+	AForm(
 		const std::string &name,
 		int minGradeToSign,
 		int minGradeToExecute
 	);
-	Form(
+	AForm(
 		const std::string &name
 	);
-	~Form();
+	virtual ~AForm();
 
-	Form(
-		const Form &other
+	AForm(
+		const AForm &other
 	);
-	Form &operator=(
-		const Form &other
+	AForm &operator=(
+		const AForm &other
 	);
 
 	const std::string &getName() const;
@@ -45,6 +48,15 @@ class Form
 		const Bureaucrat &bureaucrat
 	);
 
+	void execute(
+		const Bureaucrat &executor
+	) const;
+
+	class NotSignedException : public std::exception
+	{
+	 public:
+		virtual const char *what() const throw();
+	};
 	class GradeTooHighException : public std::exception
 	{
 	 public:
@@ -59,5 +71,5 @@ class Form
 
 std::ostream &operator<<(
 	std::ostream &os,
-	const Form &form
+	const AForm &form
 );

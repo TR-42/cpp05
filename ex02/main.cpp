@@ -1,130 +1,68 @@
-#include "./Bureaucrat.hpp"
-#include "./Form.hpp"
+#include <cstdlib>
 
-int main()
+#include "./PresidentialPardonForm.hpp"
+#include "./RobotomyRequestForm.hpp"
+#include "./ShrubberyCreationForm.hpp"
+
+int main(
+	int argc,
+	char **argv
+)
 {
-	std::cout << "# Default Bureaucrat" << std::endl;
-	{
-		Bureaucrat bureaucrat;
-		std::cout << bureaucrat << std::endl;
-		bureaucrat.incrementGrade();
-		std::cout << bureaucrat << std::endl;
-		bureaucrat.decrementGrade();
-		std::cout << bureaucrat << std::endl;
+	if (argc != 3) {
+		std::cerr << "Usage: " << argv[0] << " <target> <score>" << std::endl;
+		return 1;
 	}
 
-	std::cout << std::endl;
-	std::cout << "# Named Bureaucrat" << std::endl;
-	{
-		Bureaucrat bureaucrat("bureaucrat", 130);
-		std::cout << bureaucrat << std::endl;
-		bureaucrat.incrementGrade();
-		std::cout << bureaucrat << std::endl;
-		bureaucrat.decrementGrade();
-		std::cout << bureaucrat << std::endl;
+	std::string target(argv[1]);
+	int score;
+
+	if (target.empty()) {
+		std::cerr << "Invalid argv[1]" << std::endl;
+		return 1;
 	}
 
-	std::cout << std::endl;
-	std::cout << "# ctor(grade 0)" << std::endl;
 	try {
-		Bureaucrat bureaucrat("test", 0);
+		score = std::atoi(argv[2]);
 	} catch (const std::exception &e) {
-		std::cout << e.what() << std::endl;
+		std::cerr << "Invalid argv[2]" << std::endl;
+		return 1;
 	}
 
-	std::cout << std::endl;
-	std::cout << "# ctor(grade 151)" << std::endl;
 	try {
-		Bureaucrat bureaucrat("test", 151);
+		Bureaucrat bureaucrat("bureaucrat", score);
+
+		try {
+			std::cout << "# PresidentialPardonForm" << std::endl;
+			PresidentialPardonForm form(target);
+			bureaucrat.signForm(form);
+			bureaucrat.executeForm(form);
+		} catch (const std::exception &e) {
+			std::cerr << e.what() << std::endl;
+		}
+
+		std::cout << std::endl;
+		try {
+			std::cout << "# RobotomyRequestForm" << std::endl;
+			RobotomyRequestForm form(target);
+			bureaucrat.signForm(form);
+			bureaucrat.executeForm(form);
+		} catch (const std::exception &e) {
+			std::cerr << e.what() << std::endl;
+		}
+
+		std::cout << std::endl;
+		try {
+			std::cout << "# ShrubberyCreationForm" << std::endl;
+			ShrubberyCreationForm form(target);
+			bureaucrat.signForm(form);
+			bureaucrat.executeForm(form);
+		} catch (const std::exception &e) {
+			std::cerr << e.what() << std::endl;
+		}
 	} catch (const std::exception &e) {
-		std::cout << e.what() << std::endl;
-	}
-
-	std::cout << std::endl;
-	std::cout << "# increment(grade 1 -> 0)" << std::endl;
-	try {
-		Bureaucrat bureaucrat("test", 1);
-		bureaucrat.incrementGrade();
-	} catch (const std::exception &e) {
-		std::cout << e.what() << std::endl;
-	}
-
-	std::cout << std::endl;
-	std::cout << "# decrement(grade 150 -> 151)" << std::endl;
-	try {
-		Bureaucrat bureaucrat("test", 150);
-		bureaucrat.decrementGrade();
-	} catch (const std::exception &e) {
-		std::cout << e.what() << std::endl;
-	}
-
-	std::cout
-		<< std::endl
-		<< std::endl;
-	std::cout << "# ---------------- Form Validation Test ----------------" << std::endl;
-	{
-		try {
-			Form("", BUREAUCRAT_MAX_GRADE, BUREAUCRAT_MAX_GRADE);
-			std::cout << "Form created ... OK" << std::endl;
-		} catch (const std::exception &e) {
-			std::cout << e.what() << std::endl;
-		}
-		try {
-			Form("", BUREAUCRAT_MIN_GRADE, BUREAUCRAT_MIN_GRADE);
-			std::cout << "Form created ... OK" << std::endl;
-		} catch (const std::exception &e) {
-			std::cout << e.what() << std::endl;
-		}
-		try {
-			Form("", BUREAUCRAT_MAX_GRADE - 1, BUREAUCRAT_MAX_GRADE);
-			std::cout << "Form created ... expected error ... NG" << std::endl;
-		} catch (const std::exception &e) {
-			std::cout << e.what() << std::endl;
-		}
-		try {
-			Form("", BUREAUCRAT_MAX_GRADE, BUREAUCRAT_MAX_GRADE - 1);
-			std::cout << "Form created ... expected error ... NG" << std::endl;
-		} catch (const std::exception &e) {
-			std::cout << e.what() << std::endl;
-		}
-		try {
-			Form("", BUREAUCRAT_MIN_GRADE + 1, BUREAUCRAT_MAX_GRADE);
-			std::cout << "Form created ... expected error ... NG" << std::endl;
-		} catch (const std::exception &e) {
-			std::cout << e.what() << std::endl;
-		}
-		try {
-			Form("", BUREAUCRAT_MIN_GRADE, BUREAUCRAT_MIN_GRADE + 1);
-			std::cout << "Form created ... expected error ... NG" << std::endl;
-		} catch (const std::exception &e) {
-			std::cout << e.what() << std::endl;
-		}
-	}
-
-	std::cout
-		<< std::endl
-		<< std::endl;
-	std::cout << "# ---------------- Form Sign Test ----------------" << std::endl;
-	{
-		Form form("TestForm", 100, 99);
-		Bureaucrat bureaucrat("TestBureaucrat", 101);
-		bureaucrat.signForm(form);
-		std::cout << form << std::endl;
-		std::cout << bureaucrat << std::endl;
-
-		std::cout
-			<< std::endl;
-		bureaucrat.incrementGrade();
-		bureaucrat.signForm(form);
-		std::cout << form << std::endl;
-		std::cout << bureaucrat << std::endl;
-
-		std::cout
-			<< std::endl;
-		bureaucrat.incrementGrade();
-		bureaucrat.signForm(form);
-		std::cout << form << std::endl;
-		std::cout << bureaucrat << std::endl;
+		std::cerr << e.what() << std::endl;
+		return 1;
 	}
 
 	return 0;

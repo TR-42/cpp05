@@ -7,7 +7,7 @@
 #define BUREAUCRAT_MAX_GRADE 1
 #define BUREAUCRAT_MIN_GRADE 150
 
-class Form;
+class AForm;
 
 class Bureaucrat
 {
@@ -37,8 +37,11 @@ class Bureaucrat
 	void decrementGrade();
 
 	void signForm(
-		class Form &form
+		AForm &form
 	);
+	void executeForm(
+		const AForm &form
+	) const;
 
 	class GradeTooHighException : public std::exception
 	{
