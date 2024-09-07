@@ -1,5 +1,7 @@
 #include "./Intern.hpp"
 
+#include <iostream>
+
 #include "./PresidentialPardonForm.hpp"
 #include "./RobotomyRequestForm.hpp"
 #include "./ShrubberyCreationForm.hpp"
@@ -58,9 +60,17 @@ AForm *Intern::makeForm(
 		++i
 	) {
 		if (FORMS[i].name == formName) {
+			std::cout
+				<< "Intern creates " << formName
+				<< std::endl;
 			return FORMS[i].create(target);
 		}
 	}
+
+	std::cerr
+		<< "Form not found: "
+		<< formName
+		<< std::endl;
 
 	return NULL;
 }
